@@ -1,0 +1,9 @@
+fastapi>=0.112.0
+uvicorn>=0.30.0
+python-dotenv>=1.0.1
+pyautogen==0.9.0
+openai>=1.0.0
+yfinance>=0.2.54
+pandas>=2.2.2
+numpy>=1.26.4
+requests>=2.31.0

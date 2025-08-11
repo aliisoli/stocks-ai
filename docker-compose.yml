@@ -1,19 +1,24 @@
-version: "3.9"
+name: stocks-ai
 services:
   api:
     build:
       context: ./server
       dockerfile: Dockerfile
-    env_file: [./server/.env]
-    expose: ["8000"]
+    env_file:
+      - ./server/.env          # put OPENAI_API_KEY, PERPLEXITY_API_KEY here
+    expose:
+      - "8000"                 # internal only
     restart: unless-stopped
 
-web:
-  build:
-    context: ./web
-    dockerfile: Dockerfile.prod
-    args:
-      VITE_API_BASE: http://api:8000
-  ports:
-    - "80:80"   # or if using nginx as above, use "80:80"
-
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.prod
+    depends_on:
+      - api
+    # If your nginx.conf proxies /api to http://api:8000, you don't need this env.
+    environment:
+      - VITE_API_BASE=http://api:8000
+    ports:
+      - "80:80"                # nginx serves on 80 in the final stage
+    restart: unless-stopped

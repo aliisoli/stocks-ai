@@ -10,15 +10,14 @@ services:
       - "8000"                 # internal only
     restart: unless-stopped
 
-  web:
-    build:
-      context: ./web
-      dockerfile: Dockerfile.prod
-    depends_on:
-      - api
-    # If your nginx.conf proxies /api to http://api:8000, you don't need this env.
-    environment:
-      - VITE_API_BASE=http://api:8000
-    ports:
-      - "80:80"                # nginx serves on 80 in the final stage
-    restart: unless-stopped
+web:
+  build:
+    context: ./web
+    dockerfile: Dockerfile.prod
+    args:
+      VITE_API_BASE: /api
+  environment:
+    - VITE_API_BASE=/api
+  ports:
+    - "80:80"
+

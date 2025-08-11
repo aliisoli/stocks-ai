@@ -76,7 +76,6 @@ def stream(ticker: str, sites: Optional[str] = Query(default=None, description="
         media_type="text/event-stream",
         headers={
             "Cache-Control": "no-cache",
-            "Connection": "close",  # Changed to close to prevent reconnection
             "X-Accel-Buffering": "no"  # Disable Nginx buffering if behind proxy
         }
     )

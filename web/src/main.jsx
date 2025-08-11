@@ -40,78 +40,50 @@ function App() {
   }, []);
 
   const start = () => {
-    // Close existing connection
-    if (esRef.current) {
-      esRef.current.close();
-      esRef.current = null;
-    }
-
+    if (esRef.current) { esRef.current.close(); esRef.current = null; }
+  
     setIsConnecting(true);
     setIsCompleted(false);
     setStatus("Connecting...");
-    setNews([]);
-    setSummary(null);
-    setReport("");
-
-    // Get server URL from environment or use default
-    //const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
-    // Remove sites parameter since it's not needed anymore
-    const base = 
+    setNews([]); setSummary(null); setReport("");
+  
+    // base url: env → /api
+    const base =
       import.meta.env.VITE_SERVER_URL ??
       import.meta.env.VITE_API_BASE ??
       "/api";
     const serverUrl = String(base).replace(/\/$/, "");
-    const es = new EventSource(`${serverUrl}/stream?${qs}`);
+  
     const qs = new URLSearchParams({ ticker }).toString();
+    const es = new EventSource(`${serverUrl}/stream?${qs}`);
     esRef.current = es;
-
-    es.onopen = () => {
-      setStatus("Connected, analyzing...");
-      setIsConnecting(false);
-    };
-
+  
+    es.onopen = () => { setStatus("Connected, analyzing..."); setIsConnecting(false); };
+  
     es.onmessage = (evt) => {
       try {
         const { event, data } = JSON.parse(evt.data);
         if (event === "status") setStatus(data.message);
-        if (event === "news") {
-          setNews(prev => [...prev, data]);
-        }
+        if (event === "news") setNews(prev => [...prev, data]);
         if (event === "data_summary") setSummary(data);
         if (event === "report") setReport(data.markdown);
-        if (event === "error") {
-          setStatus("Error: " + data.message);
-          setIsConnecting(false);
-          es.close();
-          esRef.current = null;
-        }
-        if (event === "done") {
-          setStatus("Analysis Complete");
-          setIsConnecting(false);
-          setIsCompleted(true);
-          es.close();
-          esRef.current = null;
-        }
+        if (event === "error") { setStatus("Error: " + data.message); setIsConnecting(false); es.close(); esRef.current = null; }
+        if (event === "done") { setStatus("Analysis Complete"); setIsConnecting(false); setIsCompleted(true); es.close(); esRef.current = null; }
       } catch (e) {
         console.error("Parse error", e);
         setStatus("Error parsing response");
         setIsConnecting(false);
-        es.close();
-        esRef.current = null;
+        es.close(); esRef.current = null;
       }
     };
-
-    es.onerror = (error) => {
-      console.error("EventSource error:", error);
-      // Only show connection lost if we haven't completed successfully
-      if (!isCompleted) {
-        setStatus("Connection lost");
-      }
+  
+    es.onerror = () => {
+      if (!isCompleted) setStatus("Connection lost");
       setIsConnecting(false);
-      es.close();
-      esRef.current = null;
+      es.close(); esRef.current = null;
     };
   };
+  
 
   // Get news summary from the first item with content
   const getNewsSummary = () => {

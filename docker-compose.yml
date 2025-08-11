@@ -8,12 +8,12 @@ services:
     expose: ["8000"]
     restart: unless-stopped
 
-  web:
-    build:
-      context: ./web
-      dockerfile: Dockerfile.prod
-    depends_on: [api]
-    ports: ["80:5173"]     # serve on 80
-    environment:
-      - VITE_API_BASE=http://api:8000
-    restart: unless-stopped
+web:
+  build:
+    context: ./web
+    dockerfile: Dockerfile.prod
+    args:
+      VITE_API_BASE: http://api:8000
+  ports:
+    - "80:5173"   # or if using nginx as above, use "80:80"
+

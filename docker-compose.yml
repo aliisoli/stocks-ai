@@ -15,5 +15,5 @@ web:
     args:
       VITE_API_BASE: http://api:8000
   ports:
-    - "80:5173"   # or if using nginx as above, use "80:80"
+    - "80:80"   # or if using nginx as above, use "80:80"
 

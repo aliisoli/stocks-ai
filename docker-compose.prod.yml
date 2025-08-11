@@ -4,16 +4,16 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    env_file:
-      - ./server/.env   # OPENAI_API_KEY, PERPLEXITY_API_KEY
+    env_file: [./server/.env]
+    expose: ["8000"]
     restart: unless-stopped
 
   web:
     build:
       context: ./web
       dockerfile: Dockerfile.prod
-    depends_on:
-      - api
-    ports:
-      - "80:80"
+    depends_on: [api]
+    ports: ["80:5173"]     # serve on 80
+    environment:
+      - VITE_API_BASE=http://api:8000
     restart: unless-stopped

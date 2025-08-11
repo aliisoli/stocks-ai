@@ -153,7 +153,7 @@ function App() {
 
       <div className="card" style={{marginTop:16}}>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'12px'}}>
-          <h3 style={{margin: 0}}>News & Market Intelligence</h3>
+          <h3 style={{margin: 0}}>News & Market Intelligence Agent</h3>
           <span style={{fontSize: 12, color: '#aab2bf', background:'#1b2330', border:'1px solid #222834', padding:'4px 8px', borderRadius: 999}}>
             Retrieved via Research Agent
           </span>
@@ -228,7 +228,7 @@ function App() {
 
       <div className="card" style={{marginTop:16}}>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'12px'}}>
-          <h3 style={{margin: 0}}>Market Data Snapshot</h3>
+          <h3 style={{margin: 0}}>Market Data Agent</h3>
           <span style={{fontSize: 12, color: '#aab2bf', background:'#1b2330', border:'1px solid #222834', padding:'4px 8px', borderRadius: 999}}>
             Retrieved via Market Data Agent
           </span>
@@ -263,7 +263,7 @@ function App() {
 
       <div className="card" style={{marginTop:16}}>
         <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'12px'}}>
-          <h3 style={{margin: 0}}>Analyst Memo</h3>
+          <h3 style={{margin: 0}}>Analyst Agent Verdit</h3>
           <span style={{fontSize: 12, color: '#aab2bf', background:'#1b2330', border:'1px solid #222834', padding:'4px 8px', borderRadius: 999}}>
             Drafted by Analyst Agent
           </span>

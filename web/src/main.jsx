@@ -54,10 +54,15 @@ function App() {
     setReport("");
 
     // Get server URL from environment or use default
-    const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
+    //const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000";
     // Remove sites parameter since it's not needed anymore
+    const base = 
+      import.meta.env.VITE_SERVER_URL ??
+      import.meta.env.VITE_API_BASE ??
+      "/api";
+    const serverUrl = String(base).replace(/\/$/, "");
+    const es = new EventSource(`${serverUrl}/stream?${qs}`);
     const qs = new URLSearchParams({ ticker }).toString();
-    const es = new EventSource(`${serverUrl}/api/stream?${qs}`);
     esRef.current = es;
 
     es.onopen = () => {
